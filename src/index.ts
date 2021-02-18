@@ -25,7 +25,7 @@ window.addEventListener("DOMContentLoaded", () => {
         model.loadVRM(url);
     });
 
-    // フレーム更新
+    //フレーム更新
     const update = () => {
         requestAnimationFrame(update)
         viewer.update();
