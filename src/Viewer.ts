@@ -52,6 +52,7 @@ export class Viewer {
 
         // レンダラー
         this._renderer = new THREE.WebGLRenderer({
+            antialias: false,
             canvas: this._canvas
         });
         this._renderer.setPixelRatio(window.devicePixelRatio)
