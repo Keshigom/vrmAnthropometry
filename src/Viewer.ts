@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 
@@ -36,19 +35,19 @@ export class Viewer {
         // カメラ
         this._camera = new THREE.PerspectiveCamera(
             45, this._canvas.clientWidth / this._canvas.clientHeight, 0.1, 1000)
-        this._camera.position.set(0, 1.3, -1)
+        this._camera.position.set(0, 1.3, -3)
         this._camera.rotation.set(0, Math.PI, 0)
 
+        // カメラコントローラー
+        this._controls = new OrbitControls(this._camera, this._canvas);
+        this._controls.target.y = 1.0;
+        this._controls.update();
 
         // ライト
         const light = new THREE.DirectionalLight(0xffffff)
         light.position.set(-1, 1, -1).normalize()
         this._scene.add(light)
 
-        // カメラコントローラー
-        this._controls = new OrbitControls(this._camera, this._canvas);
-        this._controls.target.y = 1.0;
-        this._controls.update();
 
         // レンダラー
         this._renderer = new THREE.WebGLRenderer({
