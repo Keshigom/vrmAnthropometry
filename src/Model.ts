@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import { VRM } from '@pixiv/three-vrm'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { measure } from './Measure';
+import { Scene } from 'three';
 
 export class Model {
 
@@ -25,6 +27,7 @@ export class Model {
                 VRM.from(gltf).then((vrm) => {
                     this._scene.add(vrm.scene);
                     this._vrm = vrm;
+                    measure(vrm);
                 })
             }
         );

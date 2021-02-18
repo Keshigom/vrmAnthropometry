@@ -1,9 +1,6 @@
 import * as THREE from 'three'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { DOGShader } from './shader/dog'
 
 
 export class Viewer {
@@ -11,7 +8,7 @@ export class Viewer {
     private _canvas: HTMLCanvasElement;
     private _camera: THREE.Camera;
     private _controls: OrbitControls;
-    private _composer: EffectComposer;
+    private _renderer: THREE.WebGLRenderer;
 
     constructor(canvas: HTMLCanvasElement) {
         this.initScene(canvas);
@@ -22,7 +19,7 @@ export class Viewer {
     }
 
     public update() {
-        this._composer.render();
+        this._renderer.render(this._scene, this._camera);
     }
 
 
@@ -54,25 +51,18 @@ export class Viewer {
         this._controls.update();
 
         // レンダラー
-        const renderer = new THREE.WebGLRenderer({
+        this._renderer = new THREE.WebGLRenderer({
             canvas: this._canvas
         });
-        renderer.setPixelRatio(window.devicePixelRatio)
-        renderer.setSize(this._canvas.clientWidth, this._canvas.clientHeight)
-        renderer.setClearColor(0x7fbfff, 1.0)
+        this._renderer.setPixelRatio(window.devicePixelRatio)
+        this._renderer.setSize(this._canvas.clientWidth, this._canvas.clientHeight)
+        this._renderer.setClearColor(0x7fbfff, 1.0)
 
-        // コンポーザー
-        this._composer = new EffectComposer(renderer);
-        this.initRenderPass(this._scene, this._camera, this._composer);
+        // ヘルパー
+        const axesHelper = new THREE.AxesHelper(5);
+        this._scene.add(axesHelper);
+        const gridHelper = new THREE.GridHelper(10, 10);
+        this._scene.add(gridHelper);
     }
 
-    private initRenderPass(scene: THREE.Scene, camera: THREE.Camera, composer: EffectComposer) {
-        const renderPass = new RenderPass(scene, camera);
-        composer.addPass(renderPass);
-
-        // ガウス差分フィルタの適用
-        const dog = new ShaderPass(DOGShader);
-        composer.addPass(dog);
-
-    }
 }
