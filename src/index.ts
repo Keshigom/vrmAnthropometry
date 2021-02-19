@@ -1,12 +1,18 @@
+import { VRM } from '@pixiv/three-vrm'
 import { Viewer } from './Viewer'
 import { Model } from './Model'
+import { measure } from './Measure'
 
 window.addEventListener("DOMContentLoaded", () => {
 
     const canvas = document.getElementById('viewer') as HTMLCanvasElement;
     const viewer = new Viewer(canvas);
     const scene = viewer.scene;
-    const model = new Model(scene);
+    const model = new Model(scene, (vrm: VRM) => {
+        measure(vrm, viewer.renderInfo());
+    });
+
+    //デフォルトモデル読み込み
     model.loadVRM('./three-vrm-girl.vrm');
 
 

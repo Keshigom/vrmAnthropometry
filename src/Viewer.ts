@@ -21,6 +21,10 @@ export class Viewer {
         this._renderer.render(this._scene, this._camera);
     }
 
+    public renderInfo(): THREE.WebGLInfo {
+        this.update();
+        return (this._renderer.info);
+    }
 
     private initScene(canvas: HTMLCanvasElement) {
 
